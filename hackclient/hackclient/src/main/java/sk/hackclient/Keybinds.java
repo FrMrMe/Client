@@ -1,38 +1,36 @@
 package sk.hackclient;
 
 import com.mojang.blaze3d.platform.InputConstants;
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.resources.Identifier;
-import org.lwjgl.glfw.GLFW;
 import sk.hackclient.module.Module;
 import sk.hackclient.module.ModuleManager;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-/**
- * Kazdy modul dostane vlastny keybind (default nenastaveny),
- * nastavis ho v Options > Controls > Key Binds > HackClient.
- *
- * POZOR: KeyMapping / Identifier / KeyBindingHelper sa v poslednych verziach menili.
- * Ak sa tu pri kompilacii nieco nenajde, oprava je v tomto jedinom subore.
- */
 public final class Keybinds {
     private static final KeyMapping.Category CATEGORY =
             KeyMapping.Category.register(Identifier.fromNamespaceAndPath("hackclient", "modules"));
+
+    // Predvolene klavesy v poradi registracie modulov: Sprint = V, Fly = G, dalsie H, J, K, N, U, Y
+    private static final int[] DEFAULT_KEYS = {
+            InputConstants.KEY_V, InputConstants.KEY_G, InputConstants.KEY_H, InputConstants.KEY_J,
+            InputConstants.KEY_K, InputConstants.KEY_N, InputConstants.KEY_U, InputConstants.KEY_Y
+    };
+
     private static final Map<Module, KeyMapping> KEYS = new LinkedHashMap<>();
 
     private Keybinds() {}
 
     public static void register(ModuleManager manager) {
+        int i = 0;
         for (Module m : manager.all()) {
-            KeyMapping key = new KeyMapping(
+            KeyMapping key = KeyMappingHelper.registerKeyMapping(new KeyMapping(
                     "key.hackclient." + m.name.toLowerCase(),
-                    InputConstants.Type.KEYSYM,
-                    GLFW.GLFW_KEY_UNKNOWN,
-                    CATEGORY);
-            KeyBindingHelper.registerKeyBinding(key);
+                    DEFAULT_KEYS[i++ % DEFAULT_KEYS.length],
+                    CATEGORY));
             KEYS.put(m, key);
         }
     }
