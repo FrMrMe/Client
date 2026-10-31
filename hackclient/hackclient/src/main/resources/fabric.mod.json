@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "id": "hackclient",
+  "version": "${version}",
+  "name": "HackClient",
+  "description": "Vlastny utility klient pre singleplayer a vlastne servery.",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["sk.hackclient.HackClient"]
+  },
+  "depends": {
+    "fabricloader": ">=0.19.5",
+    "minecraft": "~26.3",
+    "java": ">=25",
+    "fabric-api": "*"
+  }
+}
