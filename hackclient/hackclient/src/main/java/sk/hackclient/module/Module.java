@@ -33,7 +33,7 @@ public abstract class Module {
         enabled = on;
         if (on) onEnable(); else onDisable();
         if (mc.player != null) {
-            mc.player.displayClientMessage(Component.literal(name + (on ? " \u00a7aON" : " \u00a7cOFF")), true);
+            mc.player.sendOverlayMessage(Component.literal(name + (on ? " \u00a7aON" : " \u00a7cOFF")));
         }
     }
 
